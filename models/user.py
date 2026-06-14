@@ -8,7 +8,7 @@ class User(Person):
     # Class variable to automatically generate unique, sequential IDs
     id_counter = 1
 
-    def __init__(self, name, username, role):
+    def __init__(self, name, username, password, role):
         """Initialize a new User instance."""
         # Call the parent class (Person) constructor to initialize the name
         super().__init__(name)
@@ -20,6 +20,7 @@ class User(Person):
         # Set user attributes (username triggers the setter validation)
         self.username = username
         self.role = role
+        self.password = password
 
     @property
     def username(self):
@@ -34,6 +35,35 @@ class User(Person):
 
         # Store the validated value in a protected attribute
         self._username = value
+
+    @property
+    def password(self):
+       """Getter for password property"""
+       return self._password
+
+    @password.setter
+    def password(self, value):
+        if len(value) < 4:
+            raise ValueError(
+            "Password must be at least 4 characters long."
+            )
+
+        self._password = value
+
+    @property
+    def role(self):
+        """Getter for role property"""
+        return self._role
+
+    @role.setter
+    def role(self, value):
+        """Setter for role property with validation"""
+        allowed_roles = ["user", "trainer", "member"]
+        if value.lower() not in allowed_roles:
+            raise ValueError("Invalid role.")
+        self._role = value.lower()    
+
+    allowed_roles = ["user", "trainer", "member"]
 
     def __str__(self):
         """Return a formatted string representation of the User object."""
